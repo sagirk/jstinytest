@@ -42,6 +42,15 @@
 // console.log(filteredArray);
 // Expect filteredArray to be [2,3]
 
+// Example 9: filter() skips unassigned indexes.
+// var filteredArray = filter([,1], function addOneToIndex (num, index) {
+//   return index + 1;
+// });
+// console.log(filteredArray.length);
+// Expect filteredArray.length to be 1
+// console.log(filteredArray);
+// Expect filteredArray to be [1]
+
 tests({
 
   'It should run callback array.length times.': function () {
@@ -94,6 +103,14 @@ tests({
     });
     eq(filteredArray.length, 1);
     eq(filteredArray[0], 2);
+  },
+
+  'It should not invoke callback for unassigned indexes.': function () {
+    var filteredArray = filter([,1], function addOneToIndex (num, index) {
+      return index + 1;
+    });
+    eq(filteredArray.length, 1);
+    eq(filteredArray[0], 1);
   }
 
 });

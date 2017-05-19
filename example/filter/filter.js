@@ -8,7 +8,7 @@ function filter(originalArray, callback, optionalThis) {
   var filteredArray = [];
 
   for (var i = 0; i < originalArray.length; i++) {
-    if (filterCallback(originalArray[i], i, originalArray)) {
+    if (i in originalArray && filterCallback(originalArray[i], i, originalArray)) {
       filteredArray.push(originalArray[i]);
     }
   }
