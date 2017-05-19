@@ -1,0 +1,100 @@
+<script src="../../tinytest.js"></script>
+<script src="filter.js"></script>
+<script>
+// Example 1: Callback should run array.length times.
+// filter([1,2,3], function () {});
+
+// Example 2: Callback has access to ith element.
+// filter([1], function (element) {
+//   console.log(element);
+// });
+
+// Example 3: Callback has access to index.
+// filter([1], function(element, index) {
+//   console.log(index);
+// });
+
+// Example 4: Callback has access to originalArray.
+// filter([1,2,3], function (element, index, originalArray) {
+//   console.log(originalArray);
+// });
+
+// Example 5: Optional this.
+// filter([], function () {
+//   console.log(this.description);
+// }, {'description': 'I should be accessible inside of the callback.'});
+
+// Example 6: filter() returns an array.
+// var filteredArray = map([1,2,3], function () {});
+// console.log(Array.isArray(filteredArray));
+// Expect Array.isArray(filteredArray) to be true
+
+// Example 7: filter() returns a new array, not the array being filtered.
+// var arrayBeingFiltered = [];
+// var filteredArray = filter(arrayBeingFiltered, function () {});
+// console.log(filteredArray !== arrayBeingFiltered);
+// Expect filteredArray !== arrayBeingFiltered to be true
+
+// Example 8: filter() returns filtered array.
+// var filteredArray = filter([1,2,3], function (number) {
+//   return number > 1;
+// });
+// console.log(filteredArray);
+// Expect filteredArray to be [2,3]
+
+tests({
+
+  'It should run callback array.length times.': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    filter([1,2,3], function() {
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 3);
+  },
+
+  'It should pass in the current element as the first argument to callback.': function () {
+    filter([1], function (element) {
+      eq(element, 1);
+    });
+  },
+
+  'It should pass in the current index as the second argument to callback.': function () {
+    filter([1], function(element, index) {
+      eq(index, 0);
+    });
+  },
+
+  'It should pass in the original array as the third argument to callback.': function () {
+    var testArray = [1,2,3];
+    filter(testArray, function (element, index, originalArray) {
+      eq(originalArray, testArray);
+    });
+  },
+
+  'It should accept an optional object to use as this when executing callback.': function () {
+    filter([], function () {
+      eq(this.description, 'I should be accessible inside of the callback.');
+    }, {'description': 'I should be accessible inside of the callback.'});
+  },
+
+  'It should return an array.': function () {
+    var filteredArray = filter([], function () {});
+    eq(Array.isArray(filteredArray), true);
+  },
+
+  'It should return a new array, not the array being filtered.': function () {
+    var arrayBeingFiltered = [];
+    var filteredArray = filter(arrayBeingFiltered, function() {});
+    eq(filteredArray !== arrayBeingFiltered, true);
+  },
+
+  'It should return a new array of only the values for which callback returns a value that coerces to true.': function () {
+    var filteredArray = filter([1,2], function (number) {
+      return number > 1;
+    });
+    eq(filteredArray.length, 1);
+    eq(filteredArray[0], 2);
+  }
+
+});
+</script>

@@ -1,0 +1,79 @@
+<script src="../../tinytest.js"></script>
+<script src="foreach.js"></script>
+<script>
+// Example 1: Callback should run array.length times.
+// forEach([1,2,3], function () {});
+
+// Example 2: Callback has access to ith element.
+// forEach([1,2,3], function (element) {
+//   console.log(element);
+// });
+
+// Example 3: Callback has access to index.
+// forEach([1,2,3], function (element, index) {
+//   console.log(index);
+// });
+
+// Example 4: Callback has access to originalArray.
+// forEach([1,2,3], function (element, index, originalArray) {
+//   console.log(originalArray);
+// });
+
+// Example 5: Optional this.
+// forEach([1,2,3], function (element, index, originalArray) {
+//   console.log(this.description);
+// }, {'description': 'I am a configurable this object'});
+
+// Example 6: forEach() skips unassigned indexes.
+// var numberOfTimesCallbackHasRun = 0;
+// forEach([,1], function () {
+//   numberOfTimesCallbackHasRun++;
+// });
+// console.log(numberOfTimesCallbackHasRun);
+// Expect numberOfTimesCallbackHasRun to be 1
+
+tests({
+
+  'It should run callback array.length times.': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    forEach([1,2,3], function () {
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 3);
+  },
+
+  'It should pass in the ith element as the first argument to callback.': function () {
+    forEach([1], function (element) {
+      eq(element, 1);
+    });
+  },
+
+  'It should pass in the ith position as the second argument to callback.': function () {
+    forEach([1], function (element, index) {
+      eq(index, 0);
+    });
+  },
+
+  'It should pass in the original array as the third argument to callback.': function () {
+    var testArray = [1,2,3];
+    forEach(testArray, function (element, index, originalArray) {
+      eq(originalArray, testArray);
+    });
+  },
+
+  'It should accept an optional this object.': function () {
+    forEach([1], function () {
+      eq(this.description, 'I should be accessible inside of the callback.');
+    }, {'description': 'I should be accessible inside of the callback.'});
+  },
+
+  'It should not invoke callback for unassigned indexes.': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    forEach([,1], function () {
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 1);
+  }
+
+});
+</script>
