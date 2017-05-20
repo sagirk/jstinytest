@@ -1,12 +1,114 @@
 <script src="../../tinytest.js"></script>
 <script src="reduce.js"></script>
 <script>
+// Example 1: Callback should run once for each element in the array.
+// reduce([1,2,3], function () {});
+
+// Example 2: Callback has access to accumulator.
+// reduce([1,2,3], function(accumulator) {
+//   console.log(accumulator);
+// });
+
+// Example 3: Callback has access to ith element.
+// reduce([1,2,3], function(accumulator, element) {
+//   console.log(element);
+// });
+
+// Example 4: Callback has access to index.
+// reduce([1,2,3], function (accumulator, element, index) {
+//   console.log(index);
+// });
+
+// Example 5: Callback has access to original array.
+// reduce([1,2,3], function (accumulator, element, index, array) {
+//   console.log(array);
+// });
+
+// Example 6: Optional intialValue.
+// var initialValue = 0;
+// var reducedValue = reduce([], function () {}, initialValue);
+// console.log(reducedValue === initialValue);
+// Expect (reducedValue === initialValue) to be true
+
 tests({
 
+  'It should run callback once for each element in the array.': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    reduce([1,2,3], function () {
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 2);
+  },
+
+  'It should pass in the accumulator as the first argument to callback.': function () {
+    reduce([1], function(accumulator) {
+      eq(accumulator, 1);
+    });
+  },
+  
+  'It should pass in the ith element as the second argument to callback.': function () {
+    reduce([1], function(accumulator, element) {
+      eq(element, 1);
+    });
+  },
+
+  'It should pass in the index as the third argument to callback.': function () {
+    reduce([1], function (accumulator, element, index) {
+      eq(index, 0);
+    });
+  },
+
+  'It should pass in the original array as the fourth argument to callback.': function () {
+    var testArray = [1,2,3];
+    reduce(testArray, function (accumulator, element, index, originalArray) {
+      eq(originalArray, testArray);
+    });
+  },
+
+  'It should accept an optional initialValue.': function () {
+    var initialValue = 0;
+    var reducedValue = reduce([], function (accumulator, number) {
+      return accumulator + number;
+    }, initialValue);
+    eq(reducedValue, initialValue);
+  },
+
   '': function () {},
 
   '': function () {},
-  
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
+  '': function () {},
+
   '': function () {}
 
 });  
