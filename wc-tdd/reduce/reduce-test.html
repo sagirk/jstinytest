@@ -4,7 +4,7 @@
 // Example 1: Callback should run once for each element in the array.
 // reduce([1,2,3], function () {});
 
-// Example 2: Callback has access to accumulator.
+// Example 2: Callback has access to an accumulator.
 // reduce([1,2,3], function(accumulator) {
 //   console.log(accumulator);
 // });
@@ -29,6 +29,13 @@
 // var reducedValue = reduce([], function () {}, initialValue);
 // console.log(reducedValue === initialValue);
 // Expect (reducedValue === initialValue) to be true
+
+// Example 7: It should return the reduced value.
+// var reducedValue = reduce([1,2,3], function sumOfAllValues (sum, value) {
+//   return sum + value;
+// }, 0);
+// console.log(reducedValue);
+// Expect reducedValue to be 6
 
 tests({
 
@@ -73,43 +80,12 @@ tests({
     eq(reducedValue, initialValue);
   },
 
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {},
-
-  '': function () {}
+  'It should return the reduced value.': function () {
+    var reducedValue = reduce([1,2,3], function sumOfAllValues (sum, value) {
+      return sum + value;
+    }, 0);
+    eq(reducedValue, 6);
+  }
 
 });  
 </script>
