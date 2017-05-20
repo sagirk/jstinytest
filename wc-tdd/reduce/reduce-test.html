@@ -91,6 +91,10 @@ tests({
       return sum + value;
     }, 0);
     eq(reducedValue, 6);
+    var specialCaseReducedValue = reduce([1], function (sum, value) {
+      return sum + value;
+    });
+    eq(specialCaseReducedValue, 1);
   },
 
   'It should not invoke callback for unassigned indexes.': function () {
