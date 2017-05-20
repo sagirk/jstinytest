@@ -30,12 +30,18 @@
 // console.log(reducedValue === initialValue);
 // Expect (reducedValue === initialValue) to be true
 
-// Example 7: It should return the reduced value.
-// var reducedValue = reduce([1,2,3], function sumOfAllValues (sum, value) {
+// Example 7: reduce() returns the reduced value.
+// var reducedValue = reduce([1,2,3], function (sum, value) {
 //   return sum + value;
 // }, 0);
 // console.log(reducedValue);
 // Expect reducedValue to be 6
+
+// Example 8: reduce() skips unassigned indexes.
+// var weirdArray = [,1];
+// var reducedValue = reduce(weirdArray, function () {});
+// console.log(reducedValue);
+// Expect reducedValue to be 1
 
 tests({
 
@@ -81,10 +87,16 @@ tests({
   },
 
   'It should return the reduced value.': function () {
-    var reducedValue = reduce([1,2,3], function sumOfAllValues (sum, value) {
+    var reducedValue = reduce([1,2,3], function (sum, value) {
       return sum + value;
     }, 0);
     eq(reducedValue, 6);
+  },
+
+  'It should not invoke callback for unassigned indexes.': function () {
+    var weirdArray = [,1];
+    var reducedValue = reduce(weirdArray, function () {});
+    eq(reducedValue, 1);
   }
 
 });  

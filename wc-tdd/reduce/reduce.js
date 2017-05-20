@@ -5,13 +5,21 @@ function reduce (array, callback, initialValue) {
     accumulator = initialValue;
 
     for (var i = 0; i < array.length; i++) {
-      accumulator = callback(accumulator, array[i], i, array);
+      if (i in array) {
+        accumulator = callback(accumulator, array[i], i, array);
+      }
     }
   } else {
-    accumulator = array[0];
+    firstAssignedIndex = array.findIndex(function (element) {
+      return element !== undefined;
+    });
 
-    for (var i = 1; i < array.length; i++) {
-      accumulator = callback(accumulator, array[i], i, array);
+    accumulator = array[firstAssignedIndex];
+
+    for (var i = firstAssignedIndex+1; i < array.length; i++) {
+      if (i in array) {
+        accumulator = callback(accumulator, array[i], i, array);
+      }
     }
   }
 
