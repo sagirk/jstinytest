@@ -1,44 +1,38 @@
 function reduce(array, callback, initialValue) {
-  var assignedIndexes = Object.keys(array);
-  var startingIndex = assignedIndexes[0];
-  var accumulator = initialValue;
+  var startingIndex = 0;
+  var resultSoFar = initialValue;
+  var arrayIndexes = Object.keys(array);
   // Persist length of input array at the beginning to safeguard 
   // against it being modified later by the callback, etc.
   var length = array.length;
 
   // No initialValue
   if (arguments.length < 3) {
-    if (!assignedIndexes.length) throw new TypeError('Reduce of empty array with no initial value');
+    if (!arrayIndexes.length) throw new TypeError('Reduce of empty array with no initial value');
 
-    // TODO: Get a code review from Gordon to validate if skipping the while
-    // loop in favor of a non-loop soultion was a better approach.
+    if (arrayIndexes.length === 1) {
+      var onlyIndex = arrayIndexes[0];
+      var onlyElement = array[onlyIndex];
+      return onlyElement;
+    }
 
-    // while (startingIndex in array === false && startingIndex < length) {
-    //   startingIndex++;
-    // }
+    while (startingIndex in array === false && startingIndex < length) {
+      startingIndex++;
+    }
 
-    // if (assignedIndexes.length === 1) {
-    //   var onlyIndex = assignedIndexes[0];
-    //   var onlyElement = array[onlyIndex];
-    //   return onlyElement;
-    // }
-
-    accumulator = array[startingIndex];
-
-    if (assignedIndexes.length === 1) return accumulator;
-
+    resultSoFar = array[startingIndex];
     startingIndex++;
 
   // Has initialValue
   } else {
-    if (!assignedIndexes.length) return accumulator;
+    if (!arrayIndexes.length) return initialValue;
   }
 
   for (var i = startingIndex; i < length; i++) {
     if (i in array) {
-      accumulator = callback(accumulator, array[i], i, array);
+      resultSoFar = callback(resultSoFar, array[i], i, array);
     }
   }
 
-  return accumulator;
+  return resultSoFar;
 }
