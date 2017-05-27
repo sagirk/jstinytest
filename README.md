@@ -66,15 +66,8 @@ Function reference
 // Force a failure
 fail(reason);
 
-// Assert expression is truthy (fail with reason)
-assert(expression, reason);
-
-// Assert expected == actual
-assertEquals(expected, actual)
-eq(expected, actual) // Alias for assertEquals
-
 // Assert expected === actual
-assertStrictEquals(expected, actual)
+eq(expected, actual)
 ```
 
 Errm that's it. Now stop wasting time - go test that function.

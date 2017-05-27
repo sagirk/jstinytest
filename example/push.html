@@ -1,0 +1,97 @@
+<script src="../simpletest.js"></script>
+<script>
+// Prototype implementation:
+  // function push(array, element) {
+  //   var startingArrayIndex = array.length;
+  //   var firstArgumentIndex = 1;
+  //   var totalElementCount = arguments.length - 1;
+
+  //   for (var i = 0; i < totalElementCount; i++) {
+  //     array[startingArrayIndex + i] = arguments[firstArgumentIndex + i];
+  //   }
+
+  //   return array.length;
+  // }
+
+// Function signature:
+  // arr.push([element1[, ...[, elementN]]])
+
+// Parameters:
+  // elementN
+
+// Return value:
+  // Return the new length
+
+function push(array, element) {
+  var startingArrayIndex = array.length;
+  var firstArgumentIndex = 1;
+  var numberOfElements = arguments.length - 1;
+  var arrayIndexes = Object.keys(array);
+
+  if (Number.isNaN(Number(array.length))) {
+    startingArrayIndex = 0;
+  }
+
+  if (typeof array.length === 'undefined') {
+    array.length = arrayIndexes.length;
+  }
+
+  for (var i = 0; i < numberOfElements; i++) {
+    array[startingArrayIndex + i] = arguments[firstArgumentIndex + i];
+  }
+
+  return array.length;
+}
+
+tests({
+  'It should append to an array a single value passed as an argument.': function () {
+    var testArray = [1];
+    push(testArray, 2);
+    eq(testArray[1], 2);
+    eq(testArray.length, 2);
+  },
+  'It should append to an array multiple values passed as arguments.': function () {
+    var testArray = [1];
+    push(testArray, 2, 3);
+    eq(testArray[1], 2);
+    eq(testArray[2], 3);
+    eq(testArray.length, 3);
+  },
+
+  'It should start inserting given values from index length.': function () {
+    var testArray = [1,2,3];
+    var length = testArray.length;
+    push(testArray, 4);
+    eq(testArray[length], 4);
+  },
+
+  'If length cannot be converted into a number, use 0 as startingArrayIndex.': function () {
+    var testArrayLikeObject = {
+      0: 1,
+      1: 2,
+      2: 3,
+      length: 'Three'
+    };
+    push(testArrayLikeObject, 4);
+    // FIXME: If 0 is used as startingArrayIndex, should it overwrite 
+    // the existing value at startingArrayIndex with the new one?
+    eq(testArrayLikeObject[0], 4);
+  },
+  'If length does not exist, create it.': function () {
+    var testArrayLikeObject = {
+      '0': 1,
+      '1': 2,
+      '2': 3
+    };
+    push(testArrayLikeObject, 4);
+    // FIXME: Should the startingArrayIndex in this case also be 0?
+    eq(testArrayLikeObject[0], 4);
+    eq(testArrayLikeObject.length, 3);
+  },
+
+  'It should return the new length.': function () {
+    var newLength = push([1,2,3], 4, 5);
+    eq(newLength, 5);
+  }
+});
+</script>

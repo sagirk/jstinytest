@@ -1,5 +1,4 @@
-<script src="../../tinytest.js"></script>
-<script src="foreach.js"></script>
+<script src="../simpletest.js"></script>
 <script>
 // Example 1: Callback should run array.length times.
 // forEach([1,2,3], function () {});
@@ -32,8 +31,21 @@
 // console.log(numberOfTimesCallbackHasRun);
 // Expect numberOfTimesCallbackHasRun to be 1
 
-tests({
+function forEach (array, callback, optionalThisObject) {
+  var forEachCallback = callback;
 
+  if (optionalThisObject) {
+    forEachCallback = callback.bind(optionalThisObject);
+  }
+
+  for (var i = 0; i < array.length; i++) {
+    if (i in array) {
+      forEachCallback(array[i], i, array);
+    }
+  }
+};
+
+tests({
   'It should run callback array.length times.': function () {
     var numberOfTimesCallbackHasRun = 0;
     forEach([1,2,3], function () {
@@ -47,13 +59,11 @@ tests({
       eq(element, 1);
     });
   },
-
   'It should pass in the ith position as the second argument to callback.': function () {
     forEach([1], function (element, index) {
       eq(index, 0);
     });
   },
-
   'It should pass in the original array as the third argument to callback.': function () {
     var testArray = [1,2,3];
     forEach(testArray, function (element, index, originalArray) {
@@ -74,6 +84,5 @@ tests({
     });
     eq(numberOfTimesCallbackHasRun, 1);
   }
-
 });
 </script>

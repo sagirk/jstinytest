@@ -1,5 +1,4 @@
-<script src="../../tinytest.js"></script>
-<script src="map.js"></script>
+<script src="../simpletest.js"></script>
 <script>
 // Example 1: Callback should run array.length times.
 // map([1,2,3], function () {});
@@ -52,8 +51,24 @@
 // console.log(mappedArray[1]);
 // Expect mappedArray[1] to be 2
 
-tests({
+function map (originalArray, callback, optionalThis) {
+  var mapCallback = callback;
+  var mappedArray = [];
 
+  if (optionalThis) {
+    mapCallback = callback.bind(optionalThis);
+  }
+
+  for (var i = 0; i < originalArray.length; i++) {
+    if (i in originalArray) {
+      mappedArray[i] = mapCallback(originalArray[i], i, originalArray);
+    }
+  }
+
+  return mappedArray;
+};
+
+tests({
   'It should run the callback array.length times.': function () {
     var numberOfTimesCallbackHasRun = 0;
     map([1,2,3], function () {
@@ -67,13 +82,11 @@ tests({
       eq(element, 1);
     });
   },
-
   'It should pass in the ith position as the second argument to callback.': function () {
     map([1], function (element, index) {
       eq(index, 0);
     });
   },
-
   'It should pass in the original array as the third argument to callback.': function () {
     var testArray = [1,2,3];
     map(testArray, function (element, index, originalArray) {
@@ -91,13 +104,11 @@ tests({
     var mappedArray = map([], function () {});
     eq(Array.isArray(mappedArray), true);
   },
-
   'It should return a new array, not the original array.': function () {
     var originalArray = [];
     var mappedArray = map(originalArray, function () {});
     eq(mappedArray !== originalArray, true);
   },
-
   'It should return a new array with each element being the result of the callback function.': function () {
     var mappedArray = map([1], function (element) {
       return element * 2;
@@ -113,6 +124,5 @@ tests({
     eq((0 in mappedArray), false);
     eq(mappedArray[1], 2);
   }
-  
-});  
+});
 </script>

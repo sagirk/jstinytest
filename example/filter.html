@@ -1,5 +1,4 @@
-<script src="../../tinytest.js"></script>
-<script src="filter.js"></script>
+<script src="../simpletest.js"></script>
 <script>
 // Example 1: Callback should run array.length times.
 // filter([1,2,3], function () {});
@@ -51,8 +50,24 @@
 // console.log(filteredArray);
 // Expect filteredArray to be [1]
 
-tests({
+function filter(originalArray, callback, optionalThis) {
+  var filterCallback = callback;
+  var filteredArray = [];
 
+  if (optionalThis) {
+    filterCallback = callback.bind(optionalThis);
+  }
+
+  for (var i = 0; i < originalArray.length; i++) {
+    if (i in originalArray && filterCallback(originalArray[i], i, originalArray)) {
+      filteredArray.push(originalArray[i]);
+    }
+  }
+
+  return filteredArray;
+};
+
+tests({
   'It should run callback array.length times.': function () {
     var numberOfTimesCallbackHasRun = 0;
     filter([1,2,3], function() {
@@ -66,13 +81,11 @@ tests({
       eq(element, 1);
     });
   },
-
   'It should pass in the current index as the second argument to callback.': function () {
     filter([1], function(element, index) {
       eq(index, 0);
     });
   },
-
   'It should pass in the original array as the third argument to callback.': function () {
     var testArray = [1,2,3];
     filter(testArray, function (element, index, originalArray) {
@@ -90,13 +103,11 @@ tests({
     var filteredArray = filter([], function () {});
     eq(Array.isArray(filteredArray), true);
   },
-
   'It should return a new array, not the array being filtered.': function () {
     var arrayBeingFiltered = [];
     var filteredArray = filter(arrayBeingFiltered, function() {});
     eq(filteredArray !== arrayBeingFiltered, true);
   },
-
   'It should return a new array of only the values for which callback returns a value that coerces to true.': function () {
     var filteredArray = filter([1,2], function (number) {
       return number > 1;
@@ -112,6 +123,5 @@ tests({
     eq(filteredArray.length, 1);
     eq(filteredArray[0], 1);
   }
-
 });
 </script>
