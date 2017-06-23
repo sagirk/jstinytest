@@ -14,7 +14,7 @@
  *
  *   adder-test.html (tests - just open a browser to see results)
  *
- *     <script src="tinytest.js"></script>
+ *     <script src="simpletest.js"></script>
  *     <script src="adder.js"></script>
  *     <script>
  *
@@ -38,7 +38,7 @@
  * MIT License. See https://github.com/joewalnes/jstinytest/
  */
 
-var TinyTestHelper = {
+var simpleTestHelper = {
   renderStats: function (tests, failures) {
     var numberOfTests = Object.keys(tests).length;
     var successes = numberOfTests - failures;
@@ -52,7 +52,7 @@ var TinyTestHelper = {
   }
 };
 
-var TinyTest = {
+var simpleTest = {
   run: function (tests) {
     var failures = 0;
     for (var testName in tests) {
@@ -71,7 +71,7 @@ var TinyTest = {
     setTimeout(function () { // Give document a chance to complete
       if (window.document && document.body) {
         document.body.style.backgroundColor = (failures == 0 ? '#99ff99' : '#ff9999');
-        TinyTestHelper.renderStats(tests, failures);
+        simpleTestHelper.renderStats(tests, failures);
       }
     }, 0);
   },
@@ -87,6 +87,6 @@ var TinyTest = {
   },
 };
 
-var fail = TinyTest.fail.bind(TinyTest),
-  eq = TinyTest.assertStrictEquals.bind(TinyTest), // alias for assertStrictEquals
-  tests = TinyTest.run.bind(TinyTest);
+var fail = simpleTest.fail.bind(simpleTest),
+  eq = simpleTest.assertStrictEquals.bind(simpleTest),
+  tests = simpleTest.run.bind(simpleTest);
